@@ -16,6 +16,18 @@ module.exports = class Account extends AbstractEntity {
         }
     }
 
+    static get SORT_BY_NAME() {
+        return (a, b) => {
+            if (a.companyName > b.companyName) {
+                return 1
+            }
+            if (a.companyName < b.companyName) {
+                return -1
+            }
+            return 0
+        }
+    }
+
     set id(id) {
         if (validate.isNumber(id))
             this._id = id
@@ -272,7 +284,7 @@ module.exports = class Account extends AbstractEntity {
         })
     }
 
-    static readAll(limit, offset) {
+    static readAll(sort = false, limit, offset) {
         return new AbstractEntity().__({
             method: httpRequest.GET,
             path: "/account/read/all",
@@ -290,6 +302,9 @@ module.exports = class Account extends AbstractEntity {
                 let accounts = []
                 for (let i = 0, len = data.length; i < len; i++) {
                     accounts.push(new Account(data[i]))
+                }
+                if (sort) {
+                    accounts.sort(sort)
                 }
                 return accounts
             }

@@ -129,6 +129,11 @@ describe("Account tests", () => {
         it("read all accounts", async () => {
             let accounts = await Account.readAll()
             assert.isArray(accounts)
+
+            accounts = await Account.readAll(Account.SORT_BY_NAME)
+            assert.isArray(accounts)
+
+            console.log(accounts)
         })
 
         it("list client specs", async () => {

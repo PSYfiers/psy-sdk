@@ -87,7 +87,7 @@ module.exports = class Language extends AbstractEntity {
 
     static toSelectOptions(data, supportedOnly = false) {
         let options = []
-        if (validate.isArray(data)) {
+        if (validate.isArray(data), validate.NOT_NULL) {
             for (let i = 0, len = data.length; i < len; i++) {
                 options.push({
                     value: data[i].id,
@@ -95,7 +95,6 @@ module.exports = class Language extends AbstractEntity {
                 })
             }
             if (supportedOnly) {
-                console.log("supported only")
                 options = options.filter(e => {
                     return defaults.supportedLanguages.includes(e.value)
                 })
