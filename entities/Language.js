@@ -80,4 +80,26 @@ module.exports = class Language extends AbstractEntity {
             }
         })
     }
+
+    static toSelectOptions(data) {
+        let options = []
+        if (validate.isArray(data)) {
+            for (let i = 0, len = data.length; i < len; i++) {
+                options.push({
+                    value: data[i].id,
+                    text: data[i].name
+                })
+            }
+            options = options.sort(a, b => {
+                if (a.text < b.text) {
+                    return -1
+                }
+                if (a.text > b.text) {
+                    return 1
+                }
+                return 0
+            })
+        }
+        return options
+    }
 }
