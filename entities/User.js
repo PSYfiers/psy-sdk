@@ -4,7 +4,7 @@ const Project = require("./Project")
 const Role = require("./Role")
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class User extends AbstractEntity {
 

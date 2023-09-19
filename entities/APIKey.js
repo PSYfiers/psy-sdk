@@ -1,6 +1,6 @@
 const AbstractEntity = require("./AbstractEntity")
 const httpRequest = require("../lib/httpRequest")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class APIKey extends AbstractEntity {
     constructor(data) {

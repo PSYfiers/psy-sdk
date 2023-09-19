@@ -1,7 +1,7 @@
 const AbstractEntity = require("./AbstractEntity");
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class Document extends AbstractEntity {
     constructor(data) {
@@ -71,12 +71,12 @@ module.exports = class Document extends AbstractEntity {
 
     _parseJson(data) {
         this._id = validate.isNumber(data.id, validate.NOT_NULL) ? data.id : null
-        this._path = validate.isString(data.path, null, validate.NOT_NULL) ? data.path : {}
+        this._path = validate.isObject(data.path, null, validate.NOT_NULL) ? data.path : {}
         this._goodId = validate.isNumber(data.goodId, validate.NOT_NULL) ? data.goodId : null
         this._type = data.type && [Document.TYPE_DOCUMENT, Document.TYPE_VIDEO, Document.TYPE_SOFTWARE].includes(data.type)
             ? data.type
             : null
-        this._description = validate.isString(data.description, null, validate.NOT_NULL) ? data.description : {}
+        this._description = validate.isObject(data.description, null, validate.NOT_NULL) ? data.description : {}
     }
 
     _validate(create = false) {
@@ -107,6 +107,7 @@ module.exports = class Document extends AbstractEntity {
             method: httpRequest.GET,
             path: "/docs/read",
             returnCb: (data, reject) => {
+                console.log(data)
                 if (Object.keys(data).length) {
                     this._parseJson(data)
                     return

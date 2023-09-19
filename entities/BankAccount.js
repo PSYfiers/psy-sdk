@@ -1,5 +1,5 @@
 const AbstractEntity = require("./AbstractEntity");
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class BankAccount extends AbstractEntity {
     constructor(data) {

@@ -1,7 +1,7 @@
 const AbstractEntity = require("./AbstractEntity");
 const httpRequest = require("../lib/httpRequest");
 const defaults = require("../lib/defaults")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class Directory extends AbstractEntity {
     constructor() {

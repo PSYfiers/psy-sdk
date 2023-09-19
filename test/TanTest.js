@@ -33,6 +33,7 @@ describe("TAN tests", () => {
 
             await tan.read()
 
+            assert.equal(tan.accountId, accountId)
             assert.equal(tan.isUnique, true)
             assert.equal(tan.active, true)
 
@@ -40,8 +41,8 @@ describe("TAN tests", () => {
 
         it("validated", async () => {
             let tan = new Tan()
-            tan.id = tanId,
-                tan.accountId = accountId
+            tan.id = tanId
+            tan.accountId = accountId
             tan.projectId = projectId
 
             let validated = await tan.validate()
@@ -49,15 +50,13 @@ describe("TAN tests", () => {
             assert.equal(validated, true)
         })
 
-        it("invalidate", async () => {
+        it("invalidate", async () => {               
             let tan = new Tan()
-            tan.accountId = accountId
-            tan.projectId = projectId
             tan.id = tanId
-
+            tan.accountId = accountId            
+            tan.projectId = projectId
+            
             await tan.read()
-
-            console.log(tan.toJson())
 
             assert.equal(tan.active, true)
 

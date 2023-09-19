@@ -2,7 +2,7 @@ const AbstractEntity = require("./AbstractEntity")
 const BankAccount = require("./BankAccount")
 const Country = require("./Country")
 const httpRequest = require("../lib/httpRequest")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 
 module.exports = class Creditor extends AbstractEntity {

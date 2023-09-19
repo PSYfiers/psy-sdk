@@ -1,6 +1,6 @@
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class AbstractEntity {
     constructor(cl) {
@@ -135,8 +135,9 @@ module.exports = class AbstractEntity {
                     .then(data => {
                         if (data) {
                             if (data && options.parseResult ? this._parseJson : false) {
-                                if (options.parseResult === httpRequest.JSON)
+                                if (options.parseResult === httpRequest.JSON){                                    
                                     this._parseJson(data)
+                                }
                                 resolve(options.returnResult ? data : null)
                             } else if (data && options.returnResult) {
                                 resolve(data)

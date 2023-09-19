@@ -1,7 +1,7 @@
 const AbstractEntity = require("./AbstractEntity")
 const Participant = require("./Participant")
 const httpRequest = require("../lib/httpRequest")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class Tan extends AbstractEntity {
     constructor(data) {
@@ -87,10 +87,10 @@ module.exports = class Tan extends AbstractEntity {
         return this._created
     }
 
-    _parseJson(data) {
-        this._id = validate.isString(data.id, null, validate.NOT_NULL) || validate.isString(data.tan) ? data.id || data.tan : null
+    _parseJson(data) {        
+        this._id = validate.isString(data.id, null, validate.NOT_NULL) || validate.isString(data.tan, null, validate.NOT_NULL) ? data.id || data.tan : null
         this._projectId = validate.isString(data.projectId, null, validate.NOT_NULL) ? data.projectId : null
-        this._accountId = validate.isString(data.accountId, null, validate.NOT_NULL) ? data.accountId : null
+        this._accountId = validate.isNumber(data.accountId, validate.NOT_NULL) ? data.accountId : null
         this._isUnique = validate.isBoolean(data.isUnique, validate.NOT_NULL) ? data.isUnique : null
         this._active = validate.isBoolean(data.active, validate.NOT_NULL) ? data.active : null
         this._created = validate.isDate(data.created, validate.NOT_NULL) ? data.created : new Date()
@@ -155,7 +155,7 @@ module.exports = class Tan extends AbstractEntity {
         return this.__({
             method: httpRequest.GET,
             path: "/tan/read",
-            validator: true,
+            //validator: true,
             parseResult: httpRequest.JSON,
             params: {
                 tan: {

@@ -2,7 +2,7 @@ const AbstractEntity = require("./AbstractEntity")
 const GoodsGroup = require("./GoodsGroup")
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class Goods extends AbstractEntity {
     constructor(data) {

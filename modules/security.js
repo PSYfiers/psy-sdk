@@ -1,6 +1,6 @@
 const request = require("../lib/httpRequest")
 const User = require("../entities/User")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 const defaults = require("../lib/defaults")
 
 module.exports = {

@@ -1,5 +1,5 @@
 const AbstractEntity = require("./AbstractEntity")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
 const FormData = require("form-data")

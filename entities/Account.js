@@ -1,7 +1,7 @@
 const AbstractEntity = require("./AbstractEntity")
 const Address = require("./Address")
 const httpRequest = require("../lib/httpRequest")
-const validate = require("../modules/validate")
+const { validate } = require("psy-tools")
 
 module.exports = class Account extends AbstractEntity {
     constructor(data) {
@@ -343,7 +343,7 @@ module.exports = class Account extends AbstractEntity {
                     required: true
                 }
             }
-        })       
+        })
     }
 
     static count() {
@@ -384,7 +384,7 @@ module.exports = class Account extends AbstractEntity {
                 }
                 return accounts
             }
-        })       
+        })
     }
 
 }
