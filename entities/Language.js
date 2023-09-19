@@ -21,6 +21,10 @@ module.exports = class Language extends AbstractEntity {
         }
     }
 
+    static get SUPPORTED_ONLY() {
+        return true
+    }
+
     set id(id) {
         if (validate.isLanguageId(id))
             this._id = id
@@ -81,7 +85,7 @@ module.exports = class Language extends AbstractEntity {
         })
     }
 
-    static toSelectOptions(data) {
+    static toSelectOptions(data, supportedOnly = false) {
         let options = []
         if (validate.isArray(data)) {
             for (let i = 0, len = data.length; i < len; i++) {
@@ -90,7 +94,13 @@ module.exports = class Language extends AbstractEntity {
                     text: data[i].name
                 })
             }
-            options = options.sort(a, b => {
+            if (supportedOnly) {
+                console.log("supported only")
+                options = options.filter(e => {
+                    return defaults.supportedLanguages.includes(e.value)
+                })
+            }
+            options = options.sort((a, b) => {
                 if (a.text < b.text) {
                     return -1
                 }
