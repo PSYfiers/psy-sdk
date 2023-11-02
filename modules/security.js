@@ -4,13 +4,14 @@ const { validate } = require("psy-tools")
 const defaults = require("../lib/defaults")
 
 module.exports = {
-    login(credentials) {
+    login(credentials, connection) {
         return new Promise((resolve, reject) => {
             try {
                 if (credentials && credentials.id && credentials.password) {
                     request.request(request.POST, defaults.BASE + "/security/login", null, null, credentials)
                         .then(response => {
                             let user = new User(response)
+                            user.__connection = connection
                             resolve(user)
                         })
                         .catch(err => {

@@ -2,9 +2,27 @@ const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
 const { validate } = require("psy-tools")
 
-module.exports = class AbstractEntity {
-    constructor(cl) {
-        this._class = cl
+module.exports = class AbstractEntity   {
+
+    constructor(cl) {               
+        this._class = cl    
+    }
+
+
+    static set __connection(connection) {
+        this._connection = connection
+    }
+
+    static get connection() {
+        return this._connection
+    }
+
+    set __connection(connection) {
+        this._connection = connection
+    }
+
+    get connection(){
+        return this._connection
     }
 
     _delete() {

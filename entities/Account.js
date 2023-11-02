@@ -402,4 +402,15 @@ module.exports = class Account extends AbstractEntity {
         })
     }
 
+    static toSelectOptions(data) {
+        let options = []
+        if (validate.isArray(data, validate.NOT_NULL)) {
+            for (let i = 0, len = data.length; i < len; i++) {
+                options.push({
+                    value: data[i].id,
+                    text: data[i].id + " - " + data[i].companyName
+                })
+            }
+        }
+    }
 }
