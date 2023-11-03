@@ -55,8 +55,7 @@ module.exports = class AbstractEntity {
     }
 
     __(options) {
-        return new Promise(async (resolve, reject) => {
-            console.log(options)
+        return new Promise(async (resolve, reject) => {            
             try {
                 let params = null,
                     validateFields = fields => {
