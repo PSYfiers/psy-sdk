@@ -5,6 +5,7 @@ const assert = require("chai").assert
 describe("Connection Account Test", () => {
 
     it("Security.login", async () => {
+        const User = require("../entities/User")
         let userId = "armin.neische@psyfiers.ch",
             password = "ArminNeische60",
             connection = new Connection(Connection.SERVER_PSYFIERS_STAGING)
@@ -14,6 +15,7 @@ describe("Connection Account Test", () => {
             password: password
         }, connection)
 
+        assert.instanceOf(user, User)
         assert.equal(user.connection.server, Connection.SERVER_PSYFIERS_STAGING)
     })
 

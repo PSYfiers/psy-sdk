@@ -177,7 +177,6 @@ module.exports = class Connection {
         }
     }
 
-
     __setup(instanciate, _class, param) {
         if (instanciate) {
             let instance = new _class(param)
@@ -188,6 +187,4 @@ module.exports = class Connection {
             return _class
         }
     }
-    
-
 }

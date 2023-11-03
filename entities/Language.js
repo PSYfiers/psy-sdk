@@ -94,10 +94,8 @@ module.exports = class Language extends AbstractEntity {
                     text: data[i].name
                 })
             }
-            if (supportedOnly) {
-                options = options.filter(e => {
-                    return defaults.supportedLanguages.includes(e.value)
-                })
+            if (supportedOnly === true) {
+                options = options.filter(e => defaults.supportedLanguages.includes(e.value))
             }
             options = options.sort((a, b) => {
                 if (a.text < b.text) {

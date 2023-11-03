@@ -21,6 +21,7 @@ describe("STATIC language tests", () => {
         assert.isNotNull(languages[0].value)
 
         options = Language.toSelectOptions(languages, Language.SUPPORTED_ONLY)
-        assert.equal(options.length, defaults.supportedLanguages.length)       
+        assert.equal(options.length, defaults.supportedLanguages.length)  
+       
     })
 })
