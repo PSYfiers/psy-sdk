@@ -284,6 +284,69 @@ module.exports = class Account extends AbstractEntity {
         })
     }
 
+    readAll(sort = false, limit, offset) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/account/read/all",
+            params: {
+                limit: {
+                    value: limit,
+                    validate: "number"
+                },
+                offset: {
+                    value: offset,
+                    validate: "number"
+                }
+            },
+            returnCb: data => {
+                let accounts = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let account = new Account(data[i])
+                    account.__connection = this.connection
+                    accounts.push(account)
+                }
+                if (sort) {
+                    accounts.sort(sort)
+                }
+                return accounts
+            }
+        })
+    }
+
+    search(pattern, page, rows) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/account/search/companyname",
+            params: {
+                pattern: {
+                    value: pattern,
+                    validate: "string",
+                    required: true
+                },
+                page: {
+                    value: page,
+                    validate: "number",
+                    required: true
+                },
+                rows: {
+                    value: rows,
+                    validate: "number",
+                    required: true
+                }
+            },
+            returnCb: data => {
+                let accounts = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let account = new Account(data[i])
+                    account.__connection = this.connection
+                    accounts.push(account)
+                }
+                return accounts
+            }
+        })
+    }
+
+
     static readAll(sort = false, limit, offset) {
         return new AbstractEntity().__({
             method: httpRequest.GET,

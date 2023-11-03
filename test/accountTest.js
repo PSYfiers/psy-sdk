@@ -51,6 +51,24 @@ describe("Account tests", () => {
             assert.isNotNull(account.addresses.countryId)
             assert.isBoolean(account.addresses[0].isBilling)
         })
+
+        it("read all accounts", async () => {
+            const account = new Account()
+            let accounts = await account.readAll()
+            assert.isArray(accounts)
+
+            accounts = await Account.readAll(Account.SORT_BY_NAME)
+            assert.isArray(accounts)
+
+            console.log(accounts)
+        })
+
+        it("find the created account by it`s name", async () => {
+            const account = new Account()
+            let accounts = await account.search("Armin", 0, 1)
+            assert.isArray(accounts)
+            assert.equal(accounts.length, 1)
+        })
     })
 
     describe("update account", () => {

@@ -320,6 +320,54 @@ module.exports = class Goods extends AbstractEntity {
         })
     }
 
+    readAll(limit, offset) {
+        return new Promise((resolve, reject) => {
+            let params = validate.isNumber(limit, validate.NOT_NULL) ? { limit: limit } : null
+            if (params && validate.isNumber(offset, validate.NOT_NULL)) {
+                params.offet = offset
+            }
+            httpRequest.request(httpRequest.GET, defaults.BASE + "/goods/read/all", null, params)
+                .then(data => {
+                    let goods = []
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let good = new Goods(data[i])
+                        good.__connection = this.connection
+                        goods.push(good)
+                    }
+                    resolve(goods)
+                })
+                .catch(err => {
+                    reject({
+                        status: err.status,
+                        message: "Error while reading goods"
+                    })
+                })
+        })
+    }
+
+    search(pattern) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/goods/search",
+            params: {
+                pattern: {
+                    value: pattern,
+                    validate: "string",
+                    required: true
+                }
+            },
+            returnCb: data => {
+                let goods = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    const good = new Goods(data[i])
+                    good.__connection = this.connection
+                    goods.push(good)
+                }
+                return goods
+            }
+        })
+    }
+
     static isUsed(id) {
         return new AbstractEntity().__({
             method: httpRequest.GET,

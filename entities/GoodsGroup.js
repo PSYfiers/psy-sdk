@@ -109,6 +109,22 @@ module.exports = class GoodsGroup extends AbstractEntity {
         })
     }
 
+    readAll() {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/goodsgroup/read/all",
+            returnCb: data => {
+                let groups = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let goodsGroup = new GoodsGroup(data[i])
+                    goodsGroup.__connection = this.connection
+                    groups.push(goodsGroup)
+                }
+                return groups
+            }
+        })
+    }
+
     static readAll() {
         return new AbstractEntity().__({
             method: httpRequest.GET,

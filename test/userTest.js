@@ -112,7 +112,30 @@ describe("User tests", () => {
             assert.isNull(user.id)
         })
 
+        it("read all", async () => {
+            const user = new User()
+            let users = await user.readAll()
 
+            assert.isArray(users)
+            assert.notEqual(users.length, 0)
+
+            users = await User.readAll(1)
+
+            assert.isArray(users)
+            assert.notEqual(users.length, 0)
+
+            users = await user.readAll(new Account(1))
+
+            assert.isArray(users)
+            assert.notEqual(users.length, 0)
+        })
+
+        it("not confirmed users", async () => {
+            const user = new User()
+            let notConfirmed = await user.notConfirmed()
+
+            assert.isArray(notConfirmed)
+        })
     })
 
     describe("STATIC tests", () => {
@@ -149,8 +172,5 @@ describe("User tests", () => {
 
             assert.isArray(notConfirmed)
         })
-
-
-
     })
 })

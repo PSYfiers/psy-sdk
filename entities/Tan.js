@@ -264,6 +264,104 @@ module.exports = class Tan extends AbstractEntity {
             }
         })
     }
+    
+    login(tan, projectId, accountId) {        
+        return this.__({
+            method: httpRequest.GET,
+            path: "/tan/login",
+            params: {
+                tan: {
+                    value: tan,
+                    validate: "string",
+                    required: true
+                },
+                pid: {
+                    value: projectId,
+                    validate: "string"
+                },
+                aid: {
+                    value: accountId,
+                    validate: "number"
+                }
+            },
+            returnCb: async (data) => {
+                let participant = new Participant()
+                participant.tan = data.id
+                participant.accountId = data.account_id
+                participant.projectId = data.project_id
+                await participant.read()     
+                participant.__connection = this.connection               
+                return participant
+            }
+        })
+    }
+
+    readAll(accountId, projectId, ...filters) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/tan/read/all",
+            params: {
+                aid: {
+                    value: accountId,
+                    validate: "number",
+                    required: true
+                },
+                pid: {
+                    value: projectId,
+                    validate: "string",
+                    required: true
+                }
+            },
+            returnCb: data => {
+                let tans = []
+                if (data) {
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let tan = new Tan(data[i])
+                        tan._connection = this.connection
+                        tans.push(tan)
+                    }
+                }
+
+                if (tans.length) {
+                    for (let filter of filters) {
+                        tans = tans.filter(filter)
+                    }
+                }
+
+                return tans
+            }
+        })
+    }
+
+    available(accountId, projectId) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/tan/available",
+            params: {
+                aid: {
+                    value: accountId,
+                    validate: "number",
+                    required: true
+                },
+                pid: {
+                    value: projectId,
+                    validate: "string",
+                    required: true
+                }
+            },
+            returnCb: data => {
+                let tans = []
+                if (data) {
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let tan = new Tan(data[i])
+                        tan.__connection = this.connection
+                        tans.push(tan)
+                    }
+                }
+                return tans
+            }
+        })
+    }
 
     delete() {
         return this.__({
@@ -364,7 +462,7 @@ module.exports = class Tan extends AbstractEntity {
                 participant.tan = data.id
                 participant.accountId = data.account_id
                 participant.projectId = data.project_id
-                await participant.read()
+                await participant.read()                      
                 return participant
             }
         })

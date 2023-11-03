@@ -469,6 +469,45 @@ module.exports = class Participant extends AbstractEntity {
         })
     }
 
+    readAll(accountId, projectId, limit, offset) {
+        return new Promise((resolve, reject) => {
+            if (validate.isNumber(accountId, validate.NOT_NULL)
+                && validate.isString(projectId, null, validate.NOT_NULL)) {
+
+                let params = {
+                    aid: accountId,
+                    pid: projectId
+                }
+                if (validate.isNumber(limit, validate.NOT_NULL)) {
+                    params.limit = limit
+                    if (validate.isNumber(offset, validate.NOT_NULL))
+                        params.offset = offset
+                }
+                httpRequest.request(httpRequest.GET, defaults.BASE + "/participant/read/all", null, params)
+                    .then(data => {
+                        let participants = []
+                        for (let i = 0, len = data.length; i < len; i++) {
+                            const participant = new Participant(data[i])
+                            participant.__connection = this.connection
+                            participants.push(participant)
+                        }
+                        resolve(participants)
+                    })
+                    .catch(err => {
+                        reject({
+                            status: err.status,
+                            message: "Error while reading all participants from project"
+                        })
+                    })
+            } else {
+                reject({
+                    status: 400,
+                    message: "One or more parameters missing, of wrong type or incomplete"
+                })
+            }
+        })
+    }
+
     static count(accountId, projectId) {
         return new AbstractEntity().__({
             method: httpRequest.GET,

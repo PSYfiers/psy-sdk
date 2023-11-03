@@ -250,6 +250,37 @@ module.exports = class Project extends AbstractEntity {
         })
     }
 
+    readAll(accountId, limit, offset) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/project/read/all",
+            params: {
+                id: {
+                    value: accountId,
+                    validate: "number",
+                    required: true
+                },
+                limit: {
+                    value: limit,
+                    validate: "number"
+                },
+                offset: {
+                    value: offset,
+                    validate: "number"
+                }
+            },
+            returnCb: data => {
+                let projects = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    const project = new Project(data[i])
+                    project.__connection = this.connection
+                    projects.push(project)
+                }
+                return projects
+            }
+        })
+    }
+
     /**
      * W A R N I N G
      * Todo: Implement verify if enough TANs are available!

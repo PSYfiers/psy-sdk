@@ -97,6 +97,47 @@ module.exports = class Invoice extends AbstractEntity {
         this._currency = validate.isCurrency(data.currency, validate.NOT_NULL) ? data.currency : null
     }
 
+    getUnpaid() {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/invoice/unpaid",
+            parseResult: null,
+            returnCb: data => {
+                let unpaid = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let invoice = new Invoice(data[i])
+                    invoice.__connection = this.connection
+                    unpaid.push(invoice)
+                }
+                return unpaid
+            }
+        })
+    }
+
+    readAll(accountId) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/invoice/read/all",
+            parseResult: null,
+            params: {
+                aid: {
+                    value: accountId,
+                    validate: "number",
+                    required: true
+                }
+            },
+            returnCb: data => {
+                let invoices = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let invoice = new Invoice(data[i])
+                    invoice.__connection = this.connection
+                    invoices.push(invoice)
+                }
+                return invoices
+            }
+        })
+    }
+
     static getPdf(id) {
         return new AbstractEntity().__({
             method: httpRequest.GET,

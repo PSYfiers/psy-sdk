@@ -93,6 +93,33 @@ describe("TAN tests", () => {
 
         })
 
+        it("login", async () => {
+            const tan = new Tan()
+            let participant = await tan.login("m7z8wn")
+
+            assert.equal(participant.firstname, "Armin")
+            assert.equal(participant.lastname, "Neische")
+            assert.equal(participant.fulltype, "ENTP")
+
+        })
+
+        it("read all", async () => {
+            const tan = new Tan()
+            let tans = await tan.readAll(accountId, projectId, Tan.FILTER_INACTIVE_ONLY)
+
+            assert.isArray(tans)
+            assert.notEqual(tans.length, 0)
+
+        })
+
+        it("available", async () => {
+            const tan = new Tan()
+            let available = await tan.available(accountId, projectId)
+
+            assert.isArray(available)
+            assert.notEqual(available.length, 0)
+        })
+
     })
 
     describe("STATIC tests", () => {

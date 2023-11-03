@@ -154,6 +154,66 @@ module.exports = class Document extends AbstractEntity {
         })
     }
 
+    readAll(goodId) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/docs/read/all",
+            params: {
+                gid: {
+                    value: goodId,
+                    validate: "number",
+                    required: true
+                }
+            },
+            returnCb: (data, reject) => {
+                if (data.length) {
+                    let documents = []
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let document = new Document(data[i])
+                        document.__connection = this.connection
+                        documents.push(document)
+                    }
+                    return documents
+                } else {
+                    reject({
+                        status: 404,
+                        message: "No documents found"
+                    })
+                }
+            }
+        })
+    }
+
+    categorized(accountId) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/docs/categorized",
+            params: {
+                aid: {
+                    value: accountId,
+                    validate: "number",
+                    required: true
+                }
+            },
+            returnCb: (data, reject) => {
+                if (data.length) {
+                    let documents = []
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let document = new Document(data[i])
+                        document.__connection = this.connection
+                        documents.push(document)
+                    }
+                    return documents
+                } else {
+                    reject({
+                        status: 404,
+                        message: "No documents found"
+                    })
+                }
+            }
+        })
+    }
+
     static readAll(goodId) {
         return new AbstractEntity().__({
             method: httpRequest.GET,

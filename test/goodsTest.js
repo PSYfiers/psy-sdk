@@ -103,6 +103,21 @@ describe("Goods tests", () => {
         assert.equal(boundPaths.length, 0)
     })
 
+    it("read all", async () => {
+        const goodsInst = new Goods()
+        let goods = await goodsInst.readAll()
+
+        assert.isArray(goods)
+        assert.notEqual(goods.length, 0)
+    })
+
+    it(" search", async () => {
+        const goodsInst = new Goods()
+        let result = await goodsInst.search("versand")
+
+        assert.isArray(result)
+        assert.equal(result.length, 3)
+    })
 
     it("STATIC isUsed", async () => {
         let isUsed = await Goods.isUsed(goodsId)

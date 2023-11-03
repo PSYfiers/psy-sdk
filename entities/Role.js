@@ -75,7 +75,25 @@ module.exports = class Role extends AbstractEntity {
         this._rank = validate.isNumber(data.rank, validate.NOT_NULL) ? data.rank : null
     }
 
-    static readAll(languageId) {
+    readAll() {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/role/read/all",            
+            returnCb: data => {
+                let roles = []
+                if (data) {
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let role = new Role(data[i])
+                        role.__connection = this.connection
+                        roles.push(role)
+                    }
+                }
+                return roles
+            }
+        })
+    }
+
+    static readAll() {
         return new AbstractEntity().__({
             method: httpRequest.GET,
             path: "/role/read/all",

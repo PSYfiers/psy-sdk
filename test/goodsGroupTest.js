@@ -51,6 +51,15 @@ describe("Goods group tests", () => {
         assert.isNull(group.id)
     })
 
+    it("read all", async () => {
+        const goodsGroup = new GoodsGroup()
+        let groups = await goodsGroup.readAll()
+
+        assert.isArray(groups)
+        assert.notEqual(groups.length, 0)
+    })
+
+
     it("STATIC read all", async () => {
         let groups = await GoodsGroup.readAll()
 

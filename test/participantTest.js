@@ -152,7 +152,7 @@ describe("Participant tests", () => {
             assert.equal(participant.lastname, "Alp")
 
             await participant.assignToOtherProject(accountId, projectId)
-        })
+        })        
 
         it("delete", async () => {
             let participant = new Participant()
@@ -168,6 +168,13 @@ describe("Participant tests", () => {
             assert.isNull(participant.tan)
         })
 
+        it("read all", async () => {
+            const participant = new Participant()
+            let participants = await participant.readAll(accountId, projectId)
+
+            assert.isArray(participants)
+            assert.notEqual(participants.length, 0)
+        })
 
     })
     describe("STATIC tests", () => {

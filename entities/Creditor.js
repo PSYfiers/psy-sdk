@@ -201,6 +201,22 @@ module.exports = class Creditor extends AbstractEntity {
         })
     }
 
+    readAll() {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/creditor/read/all",
+            returnCb: data => {
+                let creditors = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let creditor = new Creditor(data[i])
+                    creditor.__connection = this.connection
+                    creditors.push(creditor)
+                }
+                return creditors
+            }
+        })
+    }
+
     static readAll() {
         return new AbstractEntity().__({
             method: httpRequest.GET,

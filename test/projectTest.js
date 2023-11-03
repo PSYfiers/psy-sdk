@@ -63,6 +63,14 @@ describe("Project tests", () => {
         assert.equal(project.specs.notTanProtected, false)
     })
 
+    it("read all", async () => {
+        const project = new Project()
+        let projects = await project.readAll(accountId)
+
+        assert.isArray(projects)
+        assert.notEqual(projects.length, 0)
+    })
+
     it("STATIC count tans", async () => {
         let count = await Project.countTans(accountId, projectId)
 

@@ -75,6 +75,15 @@ describe("Creditor tests", () => {
         assert.isNull(creditor.id)
     })
 
+    it("readAll", async () => {
+        const creditor = new Creditor()
+        let creditors = await creditor.readAll()
+
+        assert.isArray(creditors)
+        assert.equal(creditors.length, 1)
+
+    })
+
     it("STATIC readAll", async () => {
 
         let creditors = await Creditor.readAll()

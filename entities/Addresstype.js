@@ -26,6 +26,22 @@ module.exports = class Addresstype extends AbstractEntity {
         this._name = validate.isString(data.name, null, validate.NOT_NULL) ? data.name : null
     }
 
+    readAll() {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/address/type/read/all",
+            returnCb: data => {
+                let addresstypes = []
+                for (let i = 0, len = data.length; i < len; i++) {
+                    let addressType = new Addresstype(data[i])
+                    addressType.__connection = this.connection
+                    addresstypes.push(addressType)
+                }
+                return addresstypes
+            }
+        })        
+    }
+
     static readAll() {
         return new AbstractEntity().__({
             method: httpRequest.GET,

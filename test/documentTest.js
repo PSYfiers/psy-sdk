@@ -86,6 +86,21 @@ describe("Document tests", () => {
         assert.isNull(doc.id)
     })
 
+    it("read all docs", async () => {
+        const document = new Document()
+        let documents = await document.readAll(22)
+
+        assert.isArray(documents)
+        assert.notEqual(documents.length, 0)
+    })
+
+    it("cetegroized docs", async () => {
+        const document = new Document()
+        let categories = await document.categorized(1)
+
+        assert.isArray(categories)
+    })
+
     it("STATIC read all docs", async () => {
         let documents = await Document.readAll(22)
 

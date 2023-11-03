@@ -432,6 +432,48 @@ module.exports = class User extends AbstractEntity {
         }
     }
 
+    readAll(accountId) {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/user/read/all",
+            params: {
+                id: {
+                    value: accountId instanceof Account ? accountId.id : accountId,
+                    validate: "number"
+                }
+            },
+            returnCb: data => {
+                let users = []
+                if (data) {
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let user = new User(data[i])
+                        user.__connection = this.connection
+                        users.push(user)
+                    }
+                }
+                return users
+            }
+        })
+    }
+
+    notConfirmed() {
+        return this.__({
+            method: httpRequest.GET,
+            path: "/user/notconfirmed",
+            returnCb: data => {
+                let users = []
+                if (data) {
+                    for (let i = 0, len = data.length; i < len; i++) {
+                        let user = new User(data[i])
+                        user.__connection = this.connection
+                        users.push(user)
+                    }
+                }
+                return users
+            }
+        })
+    }
+
     static readAll(accountId) {
         return new AbstractEntity().__({
             method: httpRequest.GET,
