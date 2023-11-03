@@ -363,8 +363,8 @@ module.exports = class Participant extends AbstractEntity {
         })
     }
 
-    read() {
-        return super.__({
+    read() {           
+        return this.__({
             parseResult: httpRequest.JSON,
             method: httpRequest.GET,
             path: "/participant/read",

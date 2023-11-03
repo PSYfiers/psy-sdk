@@ -2,15 +2,16 @@ const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
 const { validate } = require("psy-tools")
 
-module.exports = class AbstractEntity   {
+module.exports = class AbstractEntity {
 
-    constructor(cl) {               
-        this._class = cl    
+    constructor(cl) {
+        this._class = cl
     }
 
 
     static set __connection(connection) {
         this._connection = connection
+        httpRequest.connection = this._connection
     }
 
     static get connection() {
@@ -19,9 +20,10 @@ module.exports = class AbstractEntity   {
 
     set __connection(connection) {
         this._connection = connection
+        httpRequest.connection = this._connection
     }
 
-    get connection(){
+    get connection() {
         return this._connection
     }
 
@@ -54,6 +56,7 @@ module.exports = class AbstractEntity   {
 
     __(options) {
         return new Promise(async (resolve, reject) => {
+            console.log(options)
             try {
                 let params = null,
                     validateFields = fields => {
@@ -97,7 +100,9 @@ module.exports = class AbstractEntity   {
                                     validated = validate.isBase64(fields[key].value)
                                     break
                                 case "supportedLanguaguages":
-                                    validated = defaults.supportedLanguages.includes(fields[key].value)
+                                    validated = this.connection
+                                        ? this.connection.defaults.supportedLanguages.includes(filelds[key].value)
+                                        : defaults.supportedLanguages.includes(fields[key].value)
                                     break
                                 default:
                                     validated = fields[key].validate instanceof RegExp
@@ -145,7 +150,7 @@ module.exports = class AbstractEntity   {
                 }
 
                 httpRequest.request(options.method,
-                    defaults.BASE + options.path,
+                    (this.connection ? this.connection.defaults.BASE : defaults.BASE) + options.path,
                     options.headers,
                     params,
                     options.body ? options.body.toJson ? options.body.toJson() : options.body : null,
@@ -153,7 +158,7 @@ module.exports = class AbstractEntity   {
                     .then(data => {
                         if (data) {
                             if (data && options.parseResult ? this._parseJson : false) {
-                                if (options.parseResult === httpRequest.JSON){                                    
+                                if (options.parseResult === httpRequest.JSON) {
                                     this._parseJson(data)
                                 }
                                 resolve(options.returnResult ? data : null)

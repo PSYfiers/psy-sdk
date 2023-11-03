@@ -286,11 +286,11 @@ module.exports = class Tan extends AbstractEntity {
             },
             returnCb: async (data) => {
                 let participant = new Participant()
+                participant.__connection = this.connection               
                 participant.tan = data.id
                 participant.accountId = data.account_id
                 participant.projectId = data.project_id
-                await participant.read()     
-                participant.__connection = this.connection               
+                await participant.read()                   
                 return participant
             }
         })

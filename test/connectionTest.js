@@ -4,21 +4,38 @@ const assert = require("chai").assert
 
 describe("Connection Account Test", () => {
 
+    /*    it("test", async ()=>{
+            let connection1 = new Connection(Connection.SERVER_PSYFIERS_STAGING)
+            let connection2 = new Connection(Connection.SERVER_PSYFIERS_SERVICE)
+    
+            let tan1 = connection1.newInstance(Connection.TAN)
+            let participant1 = await tan1.login("m7z8wn")
+            console.log(participant1)
+    
+            let tan2 = connection2.newInstance(Connection.TAN)
+            let participant2 = await tan2.login("2gjru8")
+            console.log(participant2)        
+        })
+    */
+
+
     it("Security.login", async () => {
         const User = require("../entities/User")
         let userId = "armin.neische@psyfiers.ch",
             password = "ArminNeische60",
             connection = new Connection(Connection.SERVER_PSYFIERS_STAGING)
 
+        security.connection = connection
         let user = await security.login({
             id: userId,
             password: password
-        }, connection)
+        })
 
         assert.instanceOf(user, User)
         assert.equal(user.connection.server, Connection.SERVER_PSYFIERS_STAGING)
     })
 
+   
     it("Account instances", () => {
         const Account = require("../entities/Account")
         let connection = new Connection(Connection.SERVER_PSYFIERS_STAGING),
@@ -251,6 +268,5 @@ describe("Connection Account Test", () => {
         assert.equal(Instance.connection.server, Connection.SERVER_PSYFIERS_STAGING)
         assert.equal(newInstance.connection.server, Connection.SERVER_PSYFIERS_STAGING)
     })
-
-
+    
 })

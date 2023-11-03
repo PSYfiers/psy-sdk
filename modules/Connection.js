@@ -1,4 +1,4 @@
-const { init } = require("../index")
+const Defaults = require("../lib/ConnectionDefaults")
 
 module.exports = class Connection {
 
@@ -8,9 +8,8 @@ module.exports = class Connection {
         }
 
         if (this._server) {
-            init({
-                hostname: this._server
-            })
+            this._defaults = new Defaults()
+            this._defaults.HOSTNAME = this.server
         }
     }
 
@@ -120,6 +119,10 @@ module.exports = class Connection {
 
     get server() {
         return this._server
+    }
+
+    get defaults() {
+        return this._defaults
     }
 
     newInstance(classname, param) {

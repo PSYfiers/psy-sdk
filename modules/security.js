@@ -4,14 +4,16 @@ const { validate } = require("psy-tools")
 const defaults = require("../lib/defaults")
 
 module.exports = {
-    login(credentials, connection) {
+    connection: null,
+    login(credentials) {
         return new Promise((resolve, reject) => {
             try {
+                request.connection = this.connection
                 if (credentials && credentials.id && credentials.password) {
-                    request.request(request.POST, defaults.BASE + "/security/login", null, null, credentials)
+                    request.request(request.POST, (this.connection ? this.connection.defaults.BASE : defaults.BASE) + "/security/login", null, null, credentials)
                         .then(response => {
                             let user = new User(response)
-                            user.__connection = connection
+                            user.__connection = this.connection
                             resolve(user)
                         })
                         .catch(err => {
@@ -50,7 +52,8 @@ module.exports = {
                         user: user.toJson(),
                         account: account.toJson()
                     }
-                    request.request(request.POST, defaults.BASE + "/security/register", null, { path: path }, postData)
+                    request.connection = this.connection
+                    request.request(request.POST, (this.connection ? this.connection.defaults.BASE : defaults.BASE) + "/security/register", null, { path: path }, postData)
                         .then((data) => {
                             resolve(defaults.DEBUG ? data : null)
                         })
@@ -82,7 +85,8 @@ module.exports = {
         return new Promise((resolve, reject) => {
             if (user) {
                 let id = typeof user === "object" ? user.id : user
-                request.request(request.GET, defaults.BASE + "/security/reset/sendtoken", null, { id: id })
+                request.connection = this.connection
+                request.request(request.GET, (this.connection ? this.connection.defaults.BASE : defaults.BASE) + "/security/reset/sendtoken", null, { id: id })
                     .then(() => {
                         resolve()
                     })
@@ -119,7 +123,8 @@ module.exports = {
     resetPassword(token) {
         return new Promise((resolve, reject) => {
             if (token) {
-                request.request(request.GET, defaults.BASE + "/security/reset/password", null, { token: token })
+                request.connection = this.connection
+                request.request(request.GET, (this.connection ? this.connection.defaults.BASE : defaults.BASE) + "/security/reset/password", null, { token: token })
                     .then(() => {
                         resolve()
                     })
@@ -172,7 +177,8 @@ module.exports = {
                         oldPwd: oldPassword,
                         newPwd: newPassword
                     }
-                    request.request(request.POST, defaults.BASE + "/security/change/password", null, null, postData)
+                    request.connection = this.connection
+                    request.request(request.POST, (this.connection ? this.connection.defaults.BASE : defaults.BASE) + "/security/change/password", null, null, postData)
                         .then(() => {
                             resolve()
                         })
@@ -212,7 +218,8 @@ module.exports = {
                     })
                 } else {
                     let id = typeof user === "object" ? user.id : user
-                    request.request(request.GET, defaults.BASE + "/security/generate/password", null, { uid: id })
+                    request.connection = this.connection
+                    request.request(request.GET, (this.connection ? this.connection.defaults.BASE : defaults.BASE) + "/security/generate/password", null, { uid: id })
                         .then(pwd => {
                             resolve(pwd.password)
                         })
