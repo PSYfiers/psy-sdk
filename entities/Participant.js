@@ -1,7 +1,7 @@
 const AbstractEntity = require("./AbstractEntity")
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
-const notificationServer = require("../lib/notificationServer")
+//const notificationServer = require("../lib/notificationServer")
 const { validate } = require("psy-tools")
 
 module.exports = class Participant extends AbstractEntity {
@@ -328,6 +328,7 @@ module.exports = class Participant extends AbstractEntity {
         return true
     }
 
+    /*
     subscribe(endpoint) {
         return new Promise((resolve, reject) => {
             try {
@@ -395,6 +396,7 @@ module.exports = class Participant extends AbstractEntity {
             })
         })
     }
+    */
 
     create(options) {
         return new Promise((resolve, reject) => {
