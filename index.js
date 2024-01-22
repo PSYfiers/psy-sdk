@@ -14,7 +14,8 @@ module.exports = {
         HOSTNAME: defaults.HOSTNAME,
         PORT: defaults.PORT,
         DEBUG: defaults.DEBUG,
-        SHOWERRORS: defaults.SHOWERRORS
+        SHOWERRORS: defaults.SHOWERRORS,
+        PUSH_PUBLIC_KEY: defaults.PUSH_PUBLIC_KEY
     },
     security: require("./modules/security"),
     Account: require("./entities/Account"),

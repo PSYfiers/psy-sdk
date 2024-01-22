@@ -1,6 +1,7 @@
 const AbstractEntity = require("./AbstractEntity")
 const httpRequest = require("../lib/httpRequest")
 const defaults = require("../lib/defaults")
+const notificationServer = require("../lib/notificationServer")
 const { validate } = require("psy-tools")
 
 module.exports = class Participant extends AbstractEntity {
@@ -327,6 +328,74 @@ module.exports = class Participant extends AbstractEntity {
         return true
     }
 
+    subscribe(endpoint) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (validate.isURL(endpoint)) {
+                    console.log(defaults.BASE + "/participant/subscribe")
+                    httpRequest.request(httpRequest.POST, defaults.BASE + "/participant/subscribe", null, null, {
+                        key: defaults.PUSH_PUBLIC_KEY,
+                        endpoint: endpoint
+                    }).then(() => {
+                        resolve(notificationServer)
+                    }).catch(err => {
+                        console.log(err)
+                        reject({
+                            status: err.status,
+                            message: "Error subscribe participants"
+                        })
+                    })
+                } else {
+                    reject({
+                        status: 400,
+                        message: "No valid endpoint"
+                    })
+                }
+            } catch (err) {
+                reject({
+                    status: err.status,
+                    message: "Internal error"
+                })
+
+            }
+        })
+    }
+
+    unsubscribe(endpoint) {
+        return new Promise((resolve, reject) => {
+            if (validate.isURL(endpoint)) {
+                httpRequest.request(httpRequest.POST, defaults.BASE + "/participant/unsubscribe", null, null, {
+                    key: defaults.PUSH_PUBLIC_KEY,
+                    endpoint: endpoint,
+                    port: defaults.PUSH_PORT
+                }).then(() => {
+                    resolve()
+                }).catch(err => {
+                    reject({
+                        status: err.status,
+                        message: "Error unsubscribe participants"
+                    })
+                })
+            } else {
+                reject({
+                    status: 400,
+                    message: "No valid endpoint"
+                })
+            }
+        })
+    }
+
+    _triggerNotification(){
+        return new Promise((resolve,reject)=>{
+            httpRequest.request(httpRequest.GET, defaults.BASE + "/participant/notify")
+            .then(()=>{
+                resolve()
+            }).catch(err=>{
+                reject()
+            })
+        })
+    }
+
     create(options) {
         return new Promise((resolve, reject) => {
             if (this._validate()) {
@@ -363,7 +432,7 @@ module.exports = class Participant extends AbstractEntity {
         })
     }
 
-    read() {           
+    read() {
         return this.__({
             parseResult: httpRequest.JSON,
             method: httpRequest.GET,
@@ -508,6 +577,8 @@ module.exports = class Participant extends AbstractEntity {
         })
     }
 
+
+
     static count(accountId, projectId) {
         return new AbstractEntity().__({
             method: httpRequest.GET,
@@ -527,7 +598,7 @@ module.exports = class Participant extends AbstractEntity {
             returnCb: data => {
                 return data.count
             }
-        })        
+        })
     }
 
     static readAll(accountId, projectId, limit, offset) {

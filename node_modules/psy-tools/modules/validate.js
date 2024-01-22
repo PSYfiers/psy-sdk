@@ -1,5 +1,6 @@
-module.exports = {
+const URL = require("url").URL
 
+module.exports = {
     NOT_NULL: true,
 
     isBase64(data) {
@@ -113,6 +114,17 @@ module.exports = {
         if (notNull === false && this.isEmpty(data)) return true
         if (notNull === true && data === null) return false
         return Array.isArray(data)
+    },
+
+    isURL(data, notNull = false){
+        if(notNull === false && this.isEmpty(data)) return false
+        if(notNull === true && data===null) return false
+        try{
+            new URL(data)
+            return true
+        } catch(err){
+            return false
+        }
     },
 
     _is(data, notNull, type) {

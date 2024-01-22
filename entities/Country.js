@@ -55,7 +55,7 @@ module.exports = class Country extends AbstractEntity {
                     text: data[i].name
                 })
             }
-            options = options.sort(a, b => {
+            options = options.sort((a, b) => {
                 if (a.text < b.text) {
                     return -1
                 }

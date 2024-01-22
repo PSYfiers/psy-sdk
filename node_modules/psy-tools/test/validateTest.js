@@ -336,4 +336,12 @@ describe("Validation tests", () => {
 
     })
 
+    it("URL validation",()=>{
+        let result = validate.isURL("https://service.psyfiers.ch")
+        assert.equal(result, true)
+
+        result = validate.isURL("PSYfiers")
+        assert.equal(result, false)
+    })
+
 })
