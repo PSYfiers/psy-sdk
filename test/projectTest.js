@@ -155,7 +155,8 @@ describe("Project tests", () => {
         project.accountId = accountId
         project.id = projectId
 
-        await project.__delete()
+        //await project.__delete()
+        await project.delete()
     })
 
 

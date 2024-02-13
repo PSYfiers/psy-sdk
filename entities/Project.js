@@ -250,6 +250,27 @@ module.exports = class Project extends AbstractEntity {
         })
     }
 
+    delete(){
+        return this.__({
+            method: httpRequest.GET,
+            path: "/project/delete",
+            delete: true,
+            parseResult: null,
+            params: {
+                aid: {
+                    value: this._accountId,
+                    validate: "number",
+                    required: true
+                },
+                pid: {
+                    value: this._id,
+                    validate: "string",
+                    required: true
+                }
+            }
+        })
+    }
+
     readAll(accountId, limit, offset) {
         return this.__({
             method: httpRequest.GET,
