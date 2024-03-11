@@ -497,7 +497,7 @@ module.exports = class Participant extends AbstractEntity {
         })
     }
 
-    assignToOtherProject(newAccountId, newProjectId) {
+    assignToOtherProject(newAccountId, newProjectId, leaveOldTan = false) {
         return new Promise((resolve, reject) => {
             if (validate.isString(this._tan, null, validate.NOT_NULL)
                 && validate.isString(this._projectId, null, validate.NOT_NULL)
@@ -511,7 +511,8 @@ module.exports = class Participant extends AbstractEntity {
                         oldpid: this._projectId,
                         oldaid: this._accountId,
                         newpid: newProjectId,
-                        newaid: newAccountId
+                        newaid: newAccountId,
+                        leave: leaveOldTan                        
                     })
                         .then(() => {
                             this._accountId = newAccountId
