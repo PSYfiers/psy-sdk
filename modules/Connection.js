@@ -34,11 +34,11 @@ module.exports = class Connection {
     }
 
     static get SERVER_PSYFIERS_CC1() {
-        return "cc1.psydiers.ch"
+        return "cc1.psyfiers.ch"
     }
 
     static get SERVER_PSYFIERS_CC2() {
-        return "cc2.psydiers.ch"
+        return "cc2.psyfiers.ch"
     }
 
     static get ACCOUNT() {
