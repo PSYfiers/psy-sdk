@@ -33,6 +33,14 @@ module.exports = class Connection {
         return "staging.swiss-skills.ch"
     }
 
+    static get SERVER_PSYFIERS_CC1() {
+        return "cc1.psydiers.ch"
+    }
+
+    static get SERVER_PSYFIERS_CC2() {
+        return "cc2.psydiers.ch"
+    }
+
     static get ACCOUNT() {
         return "Account"
     }
@@ -133,7 +141,7 @@ module.exports = class Connection {
         return this.__instance(false, classname, null)
     }
 
-    __instance(instanciate, classname, params = null) {       
+    __instance(instanciate, classname, params = null) {
         switch (classname) {
             case Connection.ACCOUNT:
                 return this.__setup(instanciate, require("../entities/Account"), params)
