@@ -1,6 +1,6 @@
 {
   "name": "psy-sdk",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "AdminNT SDK",
   "main": "index.js",
   "scripts": {

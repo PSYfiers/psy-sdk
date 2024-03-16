@@ -41,6 +41,10 @@ module.exports = class Connection {
         return "cc2.psyfiers.ch"
     }
 
+    static get SERVER_PSYFIERS_CC3() {
+        return "cc3.psyfiers.ch"
+    }
+
     static get ACCOUNT() {
         return "Account"
     }
